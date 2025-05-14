@@ -1,0 +1,30 @@
+/* CSS for the visualization should go here */
+
+g.gridlines {
+  opacity: 25%;
+}
+
+.tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 8px;
+  font: 12px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip-line {
+  stroke: #aaa;
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+.tooltip-circle {
+  fill: none;
+  stroke: black;
+  pointer-events: none;
+}
