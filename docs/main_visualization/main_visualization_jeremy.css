@@ -1,1 +1,5 @@
 /* CSS for the visualization should go here */
+
+g.gridlines {
+    opacity: 25%;
+}
