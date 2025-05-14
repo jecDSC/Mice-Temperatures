@@ -7,21 +7,25 @@ import * as i from "./interaction.js";
 // console.log("Hello World!");
 // i.test();
 
+// Load Data
 async function loadData() {
   const data = await d3.csv("dataset/avgsMin.csv");
   return data;
 }
 
+// For creating graph
 function renderLineGraph(data) {
-    const width = 1000;
-    const height = 600;
+  const width = 1000;
+  const height = 600;
 
-    const svg = d3
+  // Create SVG
+  const svg = d3
   .select('#vis')
   .append('svg')
   .attr('viewBox', `0 0 ${width} ${height}`)
   .style('overflow', 'visible');
 
+  // Scales
   const xScale = d3
   .scaleLinear()
   .domain(d3.extent(data, (d) => d.min))
@@ -34,6 +38,7 @@ function renderLineGraph(data) {
   .range([0, width])
   .nice();
 
+  // Setting display window
   const margin = { top: 10, right: 10, bottom: 30, left: 20 };
   const usableArea = {
   top: margin.top,
@@ -47,12 +52,14 @@ function renderLineGraph(data) {
   xScale.range([usableArea.left, usableArea.right]);
   yScale.range([usableArea.bottom, usableArea.top]);
   
+  // Gridlines
   const gridlines = svg
   .append('g')
   .attr('class', 'gridlines')
   .attr('transform', `translate(${usableArea.left}, 0)`);
   gridlines.call(d3.axisLeft(yScale).tickFormat('').tickSize(-usableArea.width));
 
+  // Set axes
   const xAxis = d3.axisBottom(xScale);
   const yAxis = d3.axisLeft(yScale);
   
@@ -66,7 +73,8 @@ function renderLineGraph(data) {
   .attr('transform', `translate(${usableArea.left}, 0)`)
   .call(yAxis);
 
-  const data2 = [
+  // Creating the lines
+  const micedata = [
     data.filter(({ sex }) => sex === 'female'),
     data.filter(({ sex }) => sex === 'male')
   ]
@@ -79,7 +87,7 @@ function renderLineGraph(data) {
   const path = svg
     .append("g")
     .selectAll('path')
-    .data(data2)
+    .data(micedata)
     .join('path')
     .attr('class', 'stock-lines')
     .attr('d', line)
