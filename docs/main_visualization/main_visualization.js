@@ -7,14 +7,8 @@ import * as i from "./interaction.js";
 // console.log("Hello World!");
 // i.test();
 
-// Load Data
-async function loadData() {
-  const data = await d3.csv("dataset/avgsMin.csv");
-  return data;
-}
-
 // For creating graph
-function renderLineGraph(data) {
+export default function renderLineGraph(data) {
   const width = 1000;
   const height = 600;
 
@@ -112,6 +106,3 @@ function renderLineGraph(data) {
     colors
   );
 }
-
-const mice = await loadData("dataset/avgsMin.json");
-renderLineGraph(mice);
