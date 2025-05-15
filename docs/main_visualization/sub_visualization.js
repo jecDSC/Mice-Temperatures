@@ -1,4 +1,5 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
+import * as i from "./interaction_sub.js";
 
 export default function renderLineGraph_sub(data) {
   const width = 1000;
@@ -65,4 +66,15 @@ export default function renderLineGraph_sub(data) {
     .attr("stroke", "steelblue")
     .attr("stroke-width", 1.5)
     .attr("d", line);
+
+  const tooltipElements = i.createTooltip(svg);
+
+  i.addTooltipInteraction(
+    svg,
+    data,
+    xScale,
+    yScale,
+    usableArea,
+    tooltipElements
+  );
 }
