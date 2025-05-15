@@ -20,11 +20,7 @@ export default function renderLineGraph(data) {
     .style("overflow", "visible");
 
   // Scales
-  const xScale = d3
-    .scaleLinear()
-    .domain(d3.extent(data, (d) => d.min))
-    .range([0, width])
-    .nice();
+  const xScale = d3.scaleLinear().domain([0, 8640]).range([0, width]);
 
   const yScale = d3
     .scaleLinear()
@@ -79,7 +75,7 @@ export default function renderLineGraph(data) {
     .line()
     .x((d) => xScale(d.min))
     .y((d) => yScale(d.temp));
-  const colors = d3.scaleOrdinal(d3.schemeCategory10);
+  const colors = d3.scaleOrdinal(["#4269d0", "#ff8ab7"]);
 
   const path = svg
     .append("g")
@@ -105,4 +101,15 @@ export default function renderLineGraph(data) {
     tooltipElements,
     colors
   );
+
+  // Graph title
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 0 - margin.top / 2)
+    .attr("text-anchor", "middle")
+    .style("text-decoration", "underline")
+    .text(
+      "Average Core Temperature of Male Mice and Female Mice Over Six Days"
+    );
 }
