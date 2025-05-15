@@ -29,7 +29,7 @@ export default function renderLineGraph(data) {
     .nice();
 
   // Setting display window
-  const margin = { top: 10, right: 10, bottom: 30, left: 20 };
+  const margin = { top: 10, right: 10, bottom: 30, left: 30 };
   const usableArea = {
     top: margin.top,
     right: width - margin.right,
@@ -41,6 +41,23 @@ export default function renderLineGraph(data) {
 
   xScale.range([usableArea.left, usableArea.right]);
   yScale.range([usableArea.bottom, usableArea.top]);
+
+  // Background coloring
+  const daysToShade = [
+    { day: 2, start: 1440, end: 2880 },
+    { day: 6, start: 7200, end: 8640 },
+  ];
+
+  daysToShade.forEach((day) => {
+    svg
+      .append("rect")
+      .attr("x", xScale(day.start))
+      .attr("width", xScale(day.end) - xScale(day.start))
+      .attr("y", 10)
+      .attr("height", height - 39)
+      .style("fill", "#b0aeae")
+      .style("opacity", 0.5);
+  });
 
   // Gridlines
   const gridlines = svg
@@ -75,7 +92,7 @@ export default function renderLineGraph(data) {
     .line()
     .x((d) => xScale(d.min))
     .y((d) => yScale(d.temp));
-  const colors = d3.scaleOrdinal(["#4269d0", "#ff8ab7"]);
+  const colors = d3.scaleOrdinal(["#ff8ab7", "#4269d0"]);
 
   const path = svg
     .append("g")
@@ -108,8 +125,82 @@ export default function renderLineGraph(data) {
     .attr("x", width / 2)
     .attr("y", 0 - margin.top / 2)
     .attr("text-anchor", "middle")
+    .attr("font", "inherit")
     .style("text-decoration", "underline")
     .text(
       "Average Core Temperature of Male Mice and Female Mice Over Six Days"
     );
+
+  // Axes titles
+  svg
+    .append("text")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height + margin.top)
+    .attr("font", "inherit")
+    .attr("font-weight", 450)
+    .text("Time (minutes)");
+
+  svg
+    .append("text")
+    .attr("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -margin.left + 20)
+    .attr("x", -margin.top)
+    .attr("font", "inherit")
+    .attr("font-weight", 450)
+    .text("Temperature (Celsius)");
+
+  // Add legend
+  svg.append("g").attr("id", "legend").attr("transform", "translate(820,-100)");
+
+  svg
+    .select("#legend")
+    .append("circle")
+    .attr("cx", 190)
+    .attr("cy", 130)
+    .attr("r", 6)
+    .style("fill", "#ff8ab7");
+  svg
+    .select("#legend")
+    .append("circle")
+    .attr("cx", 190)
+    .attr("cy", 160)
+    .attr("r", 6)
+    .style("fill", "#4269d0");
+  svg
+    .select("#legend")
+    .append("text")
+    .attr("x", 210)
+    .attr("y", 130)
+    .text("Female")
+    .style("font-size", "15px")
+    .attr("alignment-baseline", "middle")
+    .attr("transform", "translate(0, 4)");
+  svg
+    .select("#legend")
+    .append("text")
+    .attr("x", 210)
+    .attr("y", 160)
+    .text("Male")
+    .style("font-size", "15px")
+    .attr("alignment-baseline", "middle")
+    .attr("transform", "translate(0, 4)");
+  svg
+    .select("#legend")
+    .append("rect")
+    .attr("x", 185)
+    .attr("y", 185)
+    .attr("width", 10)
+    .attr("height", 10)
+    .attr("fill", "#b0aeae");
+  svg
+    .select("#legend")
+    .append("text")
+    .attr("x", 210)
+    .attr("y", 190)
+    .text("Estrus (female)")
+    .style("font-size", "15px")
+    .attr("alignment-baseline", "middle")
+    .attr("transform", "translate(0, 4)");
 }

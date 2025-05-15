@@ -3,7 +3,7 @@ import * as i from "./interaction_sub.js";
 
 export default function renderLineGraph_sub(data) {
   const width = 1000;
-  const height = 600;
+  const height = 300;
 
   // Create SVG
   const svg = d3
@@ -18,7 +18,7 @@ export default function renderLineGraph_sub(data) {
   const yScale = d3.scaleLinear().domain([-0.6, 1.6]).range([0, width]).nice();
 
   // Setting display window
-  const margin = { top: 10, right: 10, bottom: 30, left: 20 };
+  const margin = { top: 10, right: 10, bottom: 30, left: 30 };
   const usableArea = {
     top: margin.top,
     right: width - margin.right,
@@ -43,6 +43,53 @@ export default function renderLineGraph_sub(data) {
   // Set axes
   const xAxis = d3.axisBottom(xScale);
   const yAxis = d3.axisLeft(yScale);
+
+  // Background coloring
+  const daysToShade = [
+    { day: 2, start: 1440, end: 2880 },
+    { day: 6, start: 7200, end: 8640 },
+  ];
+
+  daysToShade.forEach((day) => {
+    svg
+      .append("rect")
+      .attr("x", xScale(day.start))
+      .attr("width", xScale(day.end) - xScale(day.start))
+      .attr("y", 10)
+      .attr("height", height - 39)
+      .style("fill", "#b0aeae")
+      .style("opacity", 0.5);
+  });
+
+  // Title
+  svg
+    .append("text")
+    .attr("x", width / 2)
+    .attr("y", 0 - margin.top / 2)
+    .attr("text-anchor", "middle")
+    .attr("font", "inherit")
+    .style("text-decoration", "underline")
+    .text("Difference in Core Temperature (Female - Male)");
+
+  // Axes
+  svg
+    .append("text")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height + margin.top)
+    .attr("font", "inherit")
+    .attr("font-weight", 450)
+    .text("Time (minutes)");
+
+  svg
+    .append("text")
+    .attr("text-anchor", "end")
+    .attr("transform", "rotate(-90)")
+    .attr("y", -margin.left + 20)
+    .attr("x", -margin.top)
+    .attr("font", "inherit")
+    .attr("font-weight", 450)
+    .text("Temperature Difference (Celsius)");
 
   svg
     .append("g")

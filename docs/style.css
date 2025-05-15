@@ -127,3 +127,7 @@ figure {
     }
   }
 }
+
+img.development {
+  max-width: 100%;
+}

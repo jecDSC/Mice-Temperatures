@@ -28,3 +28,12 @@ g.gridlines {
   stroke: black;
   pointer-events: none;
 }
+
+#vis {
+  margin-right: 100px;
+}
+
+#sub_vis {
+  margin-right: 100px;
+  margin-top: 50px;
+}
